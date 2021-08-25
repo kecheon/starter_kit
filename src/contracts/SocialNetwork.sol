@@ -40,6 +40,7 @@ contract SocialNetwork {
     }
 
     function tipPost(uint256 _id) public payable {
+        require(_id > 0 && _id <= postCount);
         // Fetch the post
         Post memory _post = posts[_id];
 
