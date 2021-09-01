@@ -2,8 +2,10 @@ const SocialNetwork = artifacts.require('./SocialNetwork.sol')
 
 require('chai').use(require('chai-as-promised')).should()
 
-contract('SocialNetwork', ([deployer, author, tipper]) => {
+contract('SocialNetwork', ([deployer, author, tipper, somebody]) => {
   let socialNetwork
+  console.log(somebody)
+  console.log(author)
   before(async () => {
     socialNetwork = await SocialNetwork.deployed()
   })
