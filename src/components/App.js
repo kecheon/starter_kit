@@ -42,7 +42,7 @@ class App extends Component {
         })
         i++;
       }
-      console.log({ posts: this.state.posts });
+      this.setState({ loading: false });
     } else {
       window.alert("SocialNetwork contract is not deployed to this network");
     }
@@ -54,7 +54,8 @@ class App extends Component {
       account: '',
       socialNetwork: null,
       postCount: 0,
-      posts: []
+      posts: [],
+      loading: true
     }
   }
 
@@ -63,7 +64,10 @@ class App extends Component {
       <div>
         <div className="container-fluid mt-5">
           <Navbar account={ this.state.account } />
-          <Main posts={ this.state.posts }/>
+          { this.state.loading
+            ? <div id="loading" className="text-center mt-5"> Loading... </div>
+            : <Main posts={ this.state.posts }/>
+          }
         </div>
       </div>
     );
