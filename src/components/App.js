@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import logo from '../logo.png';
 import Web3 from 'web3';
 import './App.css';
+import Identicon from 'identicon.js';
 import SocialNetwork from '../abis/SocialNetwork.json';
 import Navbar from './Navbar';
 
@@ -61,31 +61,42 @@ class App extends Component {
   render() {
     return (
       <div>
-        
         <div className="container-fluid mt-5">
           <Navbar account={this.state.account} />
           <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
+            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '500px' }}>
               <div className="content mr-auto ml-auto">
-                <a
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={logo} className="App-logo" alt="logo" />
-                </a>
-                <h1>Dapp University Starter Kit</h1>
-                <p>
-                  Edit <code>src/components/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LEARN BLOCKCHAIN <u><b>NOW! </b></u>
-                </a>
+                { this.state.posts.map((post, key) => {
+                    return(
+                      <div className="card mb-4" key={key}>
+                        <div className="card-header">
+                          <img className="ml-2"
+                            width='30'
+                            height='30'
+                            src={`data:image/png;base64, ${ new Identicon(this.state.account, 20).toString() }`}
+                            alt="avatar"
+                          />
+                          <small className="text-muted">{ post.author }</small>
+                        </div>
+                        <ul id="postList" className="list-group list-group-flush">
+                          <li className="list-group-item">
+                            { post.content }
+                          </li>
+                          <li key={key} className="list-group-item py-2">
+                            <small className="float-eft mt-1 text-muted">
+                              TIPS: { window.web3.utils.fromWei(post.tipAmount.toString(), 'Ether')} ETH
+                            </small>
+                            <button className="btn btn-link btn-sm float-right pt-0">
+                              <span>
+                                TIP 0.1 ETH
+                              </span>
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    )
+                  })
+                }
               </div>
             </main>
           </div>
