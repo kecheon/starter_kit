@@ -48,6 +48,25 @@ class App extends Component {
     }
   }
 
+  createPost(content) {
+    this.setState({ loading: true });
+    this.state.socialNetwork.methods.createPost(content)
+      .send({ from: this.state.account })
+      .once('receipt', (receipt) => {
+        console.log(receipt);
+        this.setState({ loading: false });
+      })
+  }
+
+  tipPost(postId, tipAmount) {
+    this.setState({ loading: true });
+    this.state.socialNetwork.methods.tipPost(postId)
+      .send({ from: this.state.account, value: tipAmount })
+      .once('receipt', (receipt) => {
+        this.setState({ loading: false });
+      });
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -57,6 +76,8 @@ class App extends Component {
       posts: [],
       loading: true
     }
+    this.createPost = this.createPost.bind(this);
+    this.tipPost = this.tipPost.bind(this);
   }
 
   render() {
@@ -66,7 +87,10 @@ class App extends Component {
           <Navbar account={ this.state.account } />
           { this.state.loading
             ? <div id="loading" className="text-center mt-5"> Loading... </div>
-            : <Main posts={ this.state.posts }/>
+            : <Main 
+                posts={ this.state.posts }
+                createPost={ this.createPost }
+                tipPost={ this.tipPost } />
           }
         </div>
       </div>
